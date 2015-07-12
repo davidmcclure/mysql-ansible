@@ -21,7 +21,7 @@
 - name: Copy the AppArmor overrides
   when: ansible_os_family == 'Debian'
   template:
-    str: usr.sbin.mysqld.j2
+    src: usr.sbin.mysqld.j2
     dest: /etc/apparmor.d/local/usr.sbin.mysqld
   notify:
    - restart mysql
