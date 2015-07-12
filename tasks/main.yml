@@ -18,6 +18,14 @@
   notify:
    - restart mysql
 
+- name: Copy the AppArmor overrides
+  when: ansible_os_family == 'Debian'
+  template:
+    str: usr.sbin.mysqld.j2
+    dest: /etc/apparmor.d/local/usr.sbin.mysqld
+  notify:
+   - restart mysql
+
 - name: Create the directory /etc/mysql/conf.d
   file: path=/etc/mysql/conf.d state=directory
   notify:
@@ -55,7 +63,7 @@
 - name: remove the test database
   mysql_db: name=test state=absent
 
-- name: Create the database's
+- name: Create the databases
   mysql_db: name={{ item.name }} state=present
   with_items: mysql_db
   when: mysql_db|lower() != 'none'
